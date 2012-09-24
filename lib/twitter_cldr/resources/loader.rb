@@ -7,6 +7,7 @@ module TwitterCldr
   module Resources
 
     class Loader
+      include TwitterCldr::Performance::Tracker
 
       def get_resource(*path)
         resources_cache[resource_file_path(path)]
@@ -19,7 +20,9 @@ module TwitterCldr
       private
 
       def resources_cache
-        @resources_cache ||= Hash.new { |hash, path| hash[path] = load_resource(path) }
+        @resources_cache ||= Hash.new do |hash, path|
+          hash[path] = track(path, load_resource(path))
+        end
       end
 
       def resource_file_path(path)

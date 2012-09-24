@@ -27,6 +27,7 @@ module TwitterCldr
   autoload :Shared,        'twitter_cldr/shared'
   autoload :Tokenizers,    'twitter_cldr/tokenizers'
   autoload :Utils,         'twitter_cldr/utils'
+  autoload :Performance,   'twitter_cldr/performance'
 
   extend SingleForwardable
 
@@ -53,6 +54,11 @@ module TwitterCldr
   def_delegator :resources, :get_locale_resource
 
   class << self
+    attr_accessor :enable_profiling
+
+    def profiling_enabled?
+      @enable_profiling
+    end
 
     def resources
       @resources ||= TwitterCldr::Resources::Loader.new

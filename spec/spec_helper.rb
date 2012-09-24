@@ -6,6 +6,8 @@
 require 'rspec'
 require 'twitter_cldr'
 
+TwitterCldr.enable_profiling = true
+
 class FastGettext
   class << self
     @@locale = :en
@@ -29,6 +31,10 @@ RSpec.configure do |config|
 
   config.before(:each) do
     FastGettext.locale = :en
+  end
+
+  config.after(:all) do
+    puts "Tracked memory usage: #{TwitterCldr::Performance::Profiler.instance.mem_size} bytes."
   end
 end
 
